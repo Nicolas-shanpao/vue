@@ -9,7 +9,7 @@
 import BlogHeader from '@/components/BlogHeader'
 export default {
     name: 'Index',
-    components: { BlogHeader }
+    components: {BlogHeader}
 }
 </script>
 
