@@ -147,9 +147,11 @@ module.exports = {
             //         })
             //     ]
             // },
+            //  全局引入公用scss;向全局sass样式传入共享的全局变量
             sass: {
                 data: `
                 @import "style/scss/common.scss";
+                $src: "https://ss1.baidu.com/";
                 ` // 全局引入
             }
         }

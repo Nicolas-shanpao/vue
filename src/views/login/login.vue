@@ -35,102 +35,102 @@
 
 <script>
 
-export default {
-    name: 'Login',
-    data () {
-        var validateUsername = (rule, value, callback) => {
-            if (value === '') {
-                callback(new Error('请输入账号'))
-            } else {
-                callback()
-            }
-        }
-        var validatePassword = (rule, value, callback) => {
-            if (value === '') {
-                callback(new Error('请输入密码'))
-            } else {
-                callback()
-            }
-        }
-        return {
-            userInfo: {
-                username: '',
-                password: ''
-            },
-            userInfoRules: {
-                username: [
-                    {validator: validateUsername, trigger: 'blur'}
-                ],
-                password: [
-                    {validator: validatePassword, trigger: 'blur'}
-                ]
-            },
-            loading: false,
-            jinwei: {
-                lat: 0,
-                lag: 0
-            }
-        }
-    },
-    mounted () {
-        let that = this
-        setInterval(function () {
-            that.getLocation()
-        }, 1000)
-    },
-    methods: {
-        submitForm (formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.loading = true
-                    this.$store.dispatch('LoginByUsername', this.userInfo).then(() => {
-                        this.loading = false
-                        this.$router.push({path: '/'})
-                    }).catch(() => {
-                        this.loading = false
-                    })
+    export default {
+        name: 'Login',
+        data () {
+            var validateUsername = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入账号'))
                 } else {
-                    console.log('error submit!!')
-                    return false
+                    callback()
                 }
-            })
-        },
-        getLocation () {
-            var that = this
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(that.showPosition, that.showError)
-            } else {
-                alert('浏览器不支持地理定位。')
+            }
+            var validatePassword = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'))
+                } else {
+                    callback()
+                }
+            }
+            return {
+                userInfo: {
+                    username: '',
+                    password: ''
+                },
+                userInfoRules: {
+                    username: [
+                        {validator: validateUsername, trigger: 'blur'}
+                    ],
+                    password: [
+                        {validator: validatePassword, trigger: 'blur'}
+                    ]
+                },
+                loading: false,
+                jinwei: {
+                    lat: 0,
+                    lag: 0
+                }
             }
         },
-        showError (error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    console.log('定位失败,用户拒绝请求地理定位')
-                    break
-                case error.POSITION_UNAVAILABLE:
-                    console.log('定位失败,位置信息是不可用')
-                    break
-                case error.TIMEOUT:
-                    console.log('定位失败,请求获取用户位置超时')
-                    break
-                case error.UNKNOWN_ERROR:
-                    console.log('定位失败,定位系统失效')
-                    break
-            }
-        },
-        showPosition (position) {
+        mounted () {
             let that = this
-            var lat = position.coords.latitude // 纬度
-            var lag = position.coords.longitude // 经度
-            let latlag = {
-                lat: lat,
-                lag: lag
+            setInterval(function () {
+                that.getLocation()
+            }, 1000)
+        },
+        methods: {
+            submitForm (formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.loading = true
+                        this.$store.dispatch('LoginByUsername', this.userInfo).then(() => {
+                            this.loading = false
+                            this.$router.push({path: '/'})
+                        }).catch(() => {
+                            this.loading = false
+                        })
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+                })
+            },
+            getLocation () {
+                var that = this
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(that.showPosition, that.showError)
+                } else {
+                    alert('浏览器不支持地理定位。')
+                }
+            },
+            showError (error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        console.log('定位失败,用户拒绝请求地理定位')
+                        break
+                    case error.POSITION_UNAVAILABLE:
+                        console.log('定位失败,位置信息是不可用')
+                        break
+                    case error.TIMEOUT:
+                        console.log('定位失败,请求获取用户位置超时')
+                        break
+                    case error.UNKNOWN_ERROR:
+                        console.log('定位失败,定位系统失效')
+                        break
+                }
+            },
+            showPosition (position) {
+                let that = this
+                var lat = position.coords.latitude // 纬度
+                var lag = position.coords.longitude // 经度
+                let latlag = {
+                    lat: lat,
+                    lag: lag
+                }
+                that.jinwei = latlag
             }
-            that.jinwei = latlag
         }
     }
-}
 </script>
 
 <style lang="scss" scoped>
