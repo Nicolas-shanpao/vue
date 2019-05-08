@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([["chunk-2d2109eb"],{b953:function(n,e,t){"use strict";t.r(e);var c={name:"register",created:function(){}},r=t("2877"),u=Object(r.a)(c,function(){var n=this,e=n.$createElement;return(n._self._c||e)("div",[n._v("\n    注册\n")])},[],!1,null,null,null);e.default=u.exports}}]);

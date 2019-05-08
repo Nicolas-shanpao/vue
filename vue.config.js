@@ -48,8 +48,8 @@ module.exports = {
             config.plugins.push(
                 new UglifyJsPlugin({
                     uglifyOptions: {
+                        warnings: false,
                         compress: {
-                            warnings: false,
                             drop_console: true,
                             drop_debugger: false,
                             pure_funcs: ['console.log'] // 移除console
