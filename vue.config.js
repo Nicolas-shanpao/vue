@@ -1,3 +1,10 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
+const path = require('path')
+
+const debug = process.env.NODE_ENV !== 'production'
+let cesiumSource = './node_modules/cesium/Source'
+let cesiumWorkers = '../Build/Cesium/Workers'
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin
@@ -108,6 +115,19 @@ module.exports = {
         } else {
             // 为开发环境修改配置...
         }
+        config.plugins.push(
+            new CopyWebpackPlugin([{from: path.join(cesiumSource, cesiumWorkers), to: 'Workers'}]),
+            new CopyWebpackPlugin([{from: path.join(cesiumSource, 'Assets'), to: 'Assets'}]),
+            new CopyWebpackPlugin([{from: path.join(cesiumSource, 'Widgets'), to: 'Widgets'}]),
+            new CopyWebpackPlugin([{
+                from: path.join(cesiumSource, 'ThirdParty/Workers'),
+                to: 'ThirdParty/Workers'
+            }]),
+            new webpack.DefinePlugin({
+                CESIUM_BASE_URL: JSON.stringify('./')
+            })
+        )
+        config.module.unknownContextCritical = false
     },
     chainWebpack: config => {
         // 对vue-cli内部的 webpack 配置进行更细粒度的修改。
@@ -129,6 +149,7 @@ module.exports = {
             .set('style', '@/style')
             .set('api', '@/api')
             .set('store', '@/store')
+            .set('cesium', path.resolve(__dirname, cesiumSource))
     },
     css: {
         // 是否使用css分离插件 ExtractTextPlugin
@@ -172,20 +193,6 @@ module.exports = {
                     '^/proname': '/' // 替换target中的请求地址，也就是说，在请求的时候，url用'/webapi'代替'http://47.107.119.18:8090/webapi'
                 }
             },
-            '/phpoa': {
-                target: 'http://123.56.7.142/', // 需要请求的地址
-                changeOrigin: true, // 是否跨域
-                pathRewrite: {
-                    '^/phpoa': '/' // 替换target中的请求地址，也就是说，在请求的时候，url用'/webapi'代替'http://47.107.119.18:8090/webapi'
-                }
-            },
-            '/ysy': {
-                target: 'https://open.ys7.com', // 需要请求的地址
-                changeOrigin: false, // 是否跨域
-                pathRewrite: {
-                    '^/ysy': '/' // 替换target中的请求地址，也就是说，在请求的时候，url用'/baidu'代替'http://123.56.7.142/bimplatform'
-                }
-            }
         } // 配置多个代理
     }
 }

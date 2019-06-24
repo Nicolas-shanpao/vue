@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import tools from './modules/tools'
 import tagsView from './modules/tagsView'
-import permission from './modules/permission'
+// import permission from './modules/permission'
+import cesium from './modules/cesium'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -20,13 +21,18 @@ const store = new Vuex.Store({
         user,
         tools,
         tagsView,
-        permission
+        // permission,
+        cesium,
     }
 })
 if (module.hot) {
     module.hot.accept([
         './getters',
-        './modules/user'
+        './modules/user',
+        './modules/tools',
+        './modules/tagsView',
+        // './modules/permission',
+        './modules/cesium',
     ], () => {
         store.hotUpdate({
             getters: require('./getters').default,
@@ -34,7 +40,8 @@ if (module.hot) {
                 user: require('./modules/user').default,
                 tools: require('./modules/tools').default,
                 tagsView: require('./modules/tagsView').default,
-                permission: require('./modules/permission').default
+                // permission: require('./modules/permission').default,
+                cesium: require('./modules/cesium').default
             }
         })
     })
